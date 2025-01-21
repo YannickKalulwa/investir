@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xamer</title>
+    <style>
+  <body> {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .balance, .investment {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Application d'Investissement</h1>
+    <div class="balance" id="balanceDisplay">Solde : $100000000000000000000.00</div>
+    <div class="investment" id="investmentDisplay">Investissement : $0.00</div>
+
+    <h2>Dépôt</h2>
+    <input type="text" id="depositPhoneNumber" placeholder="Numéro de téléphone (code pays)">
+    <input type="text" id="depositVisaCard" placeholder="Numéro de carte Visa">
+    <input type="text" id="depositMasterCard" placeholder="Numéro de carte Mastercard">
+    <input type="text" id="depositBankAccount" placeholder="Numéro de compte bancaire">
+
+    <select id="depositTime">
+        <option value="" disabled selected>Choisissez une durée</option>
+        <option value="2">2 minutes</option>
+        <option value="4">4 minutes</option>
+        <option value="8">8 minutes</option>
+        <option value="10">10 minutes</option>
+        <option value="12">12 minutes</option>
+        <option value="14">14 minutes</option>
+        <option value="16">16 minutes</option>
+        <option value="60">1 heure</option>
+        <option value="180">3 heures</option>
+        <option value="240">4 heures</option>
+        <option value="360">6 heures</option>
+        <option value="480">8 heures</option>
+        <option value="540">9 heures</option>
+        <option value="600">10 heures</option>
+    </select>
+
+    <button id="depositButton">Dépôt</button>
+
+    <h2>Retrait</h2>
+    <input type="text" id="withdrawPhoneNumber" placeholder="Numéro de téléphone (code pays)">
+    <input type="text" id="withdrawVisaCard" placeholder="Numéro de carte Visa">
+    <input type="text" id="withdrawMasterCard" placeholder="Numéro de carte Mastercard">
+    <input type="text" id="withdrawBankAccount" placeholder="Numéro de compte bancaire">
+
+    <button id="withdrawButton">Retrait</button>
+
+    <h2>Investir</h2>
+    <button id="investButton">Investir</button>
+
+    <h2>Afficher Investissement</h2>
+    <button id="showInvestmentButton">Afficher Investissement</button>
+</div>
+
+<script>
+let balance = 10000000000000000000000000000000000000000000000000.00;
+let investment = 0.00;
+
+document.getElementById('depositButton').addEventListener('click', deposit);
+document.getElementById('withdrawButton').addEventListener('click', withdraw);
+document.getElementById('investButton').addEventListener('click', invest);
+document.getElementById('showInvestmentButton').addEventListener('click', showInvestment);
+
+function deposit() {
+      const phoneNumber = document.getElementById('depositPhoneNumber').value;
+    const visaCard = document.getElementById('depositVisaCard').value;
+    const masterCard = document.getElementById('depositMasterCard').value;
+    const bankAccount = document.getElementById('depositBankAccount').value;
+
+    if (phoneNumber || visaCard || masterCard || bankAccount) {
+        let amount = 10; // Montant fixe à déposer
+        balance += amount; // Met à jour le solde
+        updateBalance();
+        alert("Dépôt réussi !");
+        
+        clearDepositFields();
+    } else {
+        alert("Veuillez entrer au moins une méthode de dépôt.");
+    }
+}
+
+function withdraw() {
+    const phoneNumber = document.getElementById('withdrawPhoneNumber').value;
+    const visaCard = document.getElementById('withdrawVisaCard').value;
+    const masterCard = document.getElementById('withdrawMasterCard').value;
+    const bankAccount = document.getElementById('withdrawBankAccount').value;
+
+    if (phoneNumber || visaCard || masterCard || bankAccount) {
+        if (balance >= 10) { // Montant fixe à retirer
+            let amount = 10; // Montant fixe à retirer
+            balance -= amount; // Met à jour le solde
+            updateBalance();
+            alert("Retrait réussi !");
+            
+            clearWithdrawFields();
+        } else {
+            alert("Fonds insuffisants.");
+        }
+    } else {
+        alert("Veuillez entrer au moins une méthode de retrait.");
+    }
+}
+
+function invest() {
+    if (balance > 0) {
+        let investmentAmount = balance * 0.100000000000000000000000000000000000000000000000000000000000000000000000000000000; // Taux d'investissement de 1000000000000000000000000000090000000000000000000000000000000000000000000000000000000000 %
+        investment += investmentAmount; // Met à jour l'investissement
+        balance -= investmentAmount; // Met à jour le solde
+        updateBalance();
+        updateInvestment();
+        alert("Investissement réussi !");
+    } else {
+        alert("Fonds insuffisants pour investir.");
+    }
+}
+
+function showInvestment() {
+    alert(Total investi : $${investment.toFixed(2)});
+}
+
+function updateBalance() {
+    document.getElementById('balanceDisplay').innerText = Solde : $${balance.toFixed(2)};
+}
+
+function updateInvestment() {
+    document.getElementById('investmentDisplay').innerText = Investissement : $${investment.toFixed(2)};
+}
+
+function clearDepositFields() {
+    document.getElementById('depositPhoneNumber').value = '';
+    document.getElementById('depositVisaCard').value = '';
+    document.getElementById('depositMasterCard').value = '';
+    document.getElementById('depositBankAccount').value = '';
+    document.getElementById('depositTime').selectedIndex = 0; // Réinitialiser le select
+}
+
+function clearWithdrawFields() {
+    document.getElementById('withdrawPhoneNumber').value = '';
+    document.getElementById('withdrawVisaCard').value = '';
+    document.getElementById('withdrawMasterCard').value = '';
+    document.getElementById('withdrawBankAccount').value = '';
+}
+</script>
+
+</body>
+</html>
