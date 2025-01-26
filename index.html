@@ -3,188 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xamer</title>
+    <title>Application d'Investissement</title>
     <style>
-  <body> {
+        body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
             padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
         }
         .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
         }
-        input[type="text"], input[type="number"], select {
+        h1, h2, h3 {
+            text-align: center;
+        }
+        input, select, button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
-        button {
-            width: 100%;
+        .hidden {
+            display: none;
+        }
+        .message {
+            margin-top: 10px;
             padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
             border-radius: 5px;
-            cursor: pointer;
         }
-        button:hover {
-            background-color: #0056b3;
+        .success {
+            background-color: #d4edda;
+            color: #155724;
         }
-        .balance, .investment {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
+    <!-- Section d'Inscription et Connexion -->
+    <div class="container" id="authContainer">
+        <h1>Inscription</h1>
+        <input type="text" id="username" placeholder="Nom d'utilisateur"><br>
+        <input type="password" id="password" placeholder="Mot de passe"><br>
+        <input type="email" id="email" placeholder="Adresse e-mail"><br>
+        <button onclick="register()">S'inscrire</button>
+        <p class="message" id="authMessage"></p>
+    </div>
 
-<div class="container">
-    <h1>Application d'Investissement</h1>
-    <div class="balance" id="balanceDisplay">Solde : $100000000000000000000.00</div>
-    <div class="investment" id="investmentDisplay">Investissement : $0.00</div>
+    <!-- Section de Connexion -->
+    <div class="container hidden" id="loginContainer">
+        <h1>Connexion</h1>
+        <input type="text" id="loginUsername" placeholder="Nom d'utilisateur"><br>
+        <input type="password" id="loginPassword" placeholder="Mot de passe"><br>
+        <button onclick="login()">Se connecter</button>
+        <p class="message" id="loginMessage"></p>
+    </div>
 
-    <h2>Dépôt</h2>
-    <input type="text" id="depositPhoneNumber" placeholder="Numéro de téléphone (code pays)">
-    <input type="text" id="depositVisaCard" placeholder="Numéro de carte Visa">
-    <input type="text" id="depositMasterCard" placeholder="Numéro de carte Mastercard">
-    <input type="text" id="depositBankAccount" placeholder="Numéro de compte bancaire">
+    <!-- Tableau de bord -->
+    <div class="container hidden" id="dashboardContainer">
+        <h1>Tableau de bord</h1>
+        <h2>Solde: <span id="balance">100</span>$</h2>
+        
+        <h3>Investir</h3>
+        <input type="number" id="amount" placeholder="Montant"><br>
+        <select id="duration">
+            <option value="2 minutes">2 minutes</option>
+            <option value="4 minutes">4 minutes</option>
+            <option value="8 minutes">8 minutes</option>
+            <option value="10 minutes">10 minutes</option>
+            <option value="12 minutes">12 minutes</option>
+            <option value="14 minutes">14 minutes</option>
+            <option value="16 minutes">16 minutes</option>
+            <option value="1 heure">1 heure</option>
+            <option value="3 heures">3 heures</option>
+            <option value="4 heures">4 heures</option>
+            <option value="6 heures">6 heures</option>
+            <option value="8 heures">8 heures</option>
+            <option value="9 heures">9 heures</option>
+            <option value="10 heures">10 heures</option>
+        </select><br>
+        <button onclick="invest()">Investir</button>
 
-    <select id="depositTime">
-        <option value="" disabled selected>Choisissez une durée</option>
-        <option value="2">2 minutes</option>
-        <option value="4">4 minutes</option>
-        <option value="8">8 minutes</option>
-        <option value="10">10 minutes</option>
-        <option value="12">12 minutes</option>
-        <option value="14">14 minutes</option>
-        <option value="16">16 minutes</option>
-        <option value="60">1 heure</option>
-        <option value="180">3 heures</option>
-        <option value="240">4 heures</option>
-        <option value="360">6 heures</option>
-        <option value="480">8 heures</option>
-        <option value="540">9 heures</option>
-        <option value="600">10 heures</option>
-    </select>
+        <h3>Dépôt</h3>
+        <input type="text" id="phone_number" placeholder="Numéro de Téléphone"><br>
+        <input type="text" id="card_visa" placeholder="Numéro de Carte Visa"><br>
+          <h3>Retrait</h3>
+    <input type="number" id="withdraw_amount" placeholder="Montant"><br>
+    <button onclick="withdraw()">Retirer</button>
 
-    <button id="depositButton">Dépôt</button>
+    <h3>Historique des Transactions</h3>
+    <div id="transactionHistory"></div>
 
-    <h2>Retrait</h2>
-    <input type="text" id="withdrawPhoneNumber" placeholder="Numéro de téléphone (code pays)">
-    <input type="text" id="withdrawVisaCard" placeholder="Numéro de carte Visa">
-    <input type="text" id="withdrawMasterCard" placeholder="Numéro de carte Mastercard">
-    <input type="text" id="withdrawBankAccount" placeholder="Numéro de compte bancaire">
-
-    <button id="withdrawButton">Retrait</button>
-
-    <h2>Investir</h2>
-    <button id="investButton">Investir</button>
-
-    <h2>Afficher Investissement</h2>
-    <button id="showInvestmentButton">Afficher Investissement</button>
+    <p class="message" id="dashboardMessage"></p>
 </div>
 
 <script>
-let balance = 10000000000000000000000000000000000000000000000000.00;
-let investment = 0.00;
+    const users = [];
+    let balance = 100;
+    let transactionHistory = [];
 
-document.getElementById('depositButton').addEventListener('click', deposit);
-document.getElementById('withdrawButton').addEventListener('click', withdraw);
-document.getElementById('investButton').addEventListener('click', invest);
-document.getElementById('showInvestmentButton').addEventListener('click', showInvestment);
+    function register() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
 
-function deposit() {
-      const phoneNumber = document.getElementById('depositPhoneNumber').value;
-    const visaCard = document.getElementById('depositVisaCard').value;
-    const masterCard = document.getElementById('depositMasterCard').value;
-    const bankAccount = document.getElementById('depositBankAccount').value;
-
-    if (phoneNumber || visaCard || masterCard || bankAccount) {
-        let amount = 10; // Montant fixe à déposer
-        balance += amount; // Met à jour le solde
-        updateBalance();
-        alert("Dépôt réussi !");
-        
-        clearDepositFields();
-    } else {
-        alert("Veuillez entrer au moins une méthode de dépôt.");
-    }
-}
-
-function withdraw() {
-    const phoneNumber = document.getElementById('withdrawPhoneNumber').value;
-    const visaCard = document.getElementById('withdrawVisaCard').value;
-    const masterCard = document.getElementById('withdrawMasterCard').value;
-    const bankAccount = document.getElementById('withdrawBankAccount').value;
-
-    if (phoneNumber || visaCard || masterCard || bankAccount) {
-        if (balance >= 10) { // Montant fixe à retirer
-            let amount = 10; // Montant fixe à retirer
-            balance -= amount; // Met à jour le solde
-            updateBalance();
-            alert("Retrait réussi !");
-            
-            clearWithdrawFields();
+        if (username && password && email) {
+            users.push({ username, password, email });
+            displayMessage('Inscription réussie !', 'authMessage', 'success');
+            document.getElementById('authContainer').classList.add('hidden');
+            document.getElementById('loginContainer').classList.remove('hidden');
         } else {
-            alert("Fonds insuffisants.");
+            displayMessage('Veuillez remplir tous les champs', 'authMessage', 'error');
         }
-    } else {
-        alert("Veuillez entrer au moins une méthode de retrait.");
     }
-}
 
-function invest() {
-    if (balance > 0) {
-        let investmentAmount = balance * 0.100000000000000000000000000000000000000000000000000000000000000000000000000000000; // Taux d'investissement de 1000000000000000000000000000090000000000000000000000000000000000000000000000000000000000 %
-        investment += investmentAmount; // Met à jour l'investissement
-        balance -= investmentAmount; // Met à jour le solde
+    function login() {
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (user) {
+            displayMessage('Connexion réussie !', 'loginMessage', 'success');
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('dashboardContainer').classList.remove('hidden');
+            updateBalance();
+            updateTransactionHistory();
+        } else {
+            displayMessage('Nom d\'utilisateur ou mot de passe incorrect', 'loginMessage', 'error');
+        }
+    }
+
+    function invest() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const duration = document.getElementById('duration').value;
+
+        if (!amount || amount <= 0) {
+            displayMessage('Veuillez entrer un montant valide', 'dashboardMessage', 'error');
+            return;
+        }
+
+        let rate = 1 + (0.10 * getDurationMultiplier(duration));
+
+        const finalAmount = amount * rate;
+        balance += finalAmount;
+        transactionHistory.push({ type: 'Investissement', amount, finalAmount, date: new Date().toLocaleString() });
         updateBalance();
-        updateInvestment();
-        alert("Investissement réussi !");
-    } else {
-        alert("Fonds insuffisants pour investir.");
+        updateTransactionHistory();
+        displayMessage(`Montant après investissement: ${finalAmount.toFixed(2)}$, Nouveau solde: ${balance.toFixed(2)}$`, 'dashboardMessage', 'success');
     }
-}
 
-function showInvestment() {
-    alert(Total investi : $${investment.toFixed(2)});
-}
+    function deposit() {
+        const amount = parseFloat(document.getElementById('deposit_amount').value);
 
-function updateBalance() {
-    document.getElementById('balanceDisplay').innerText = Solde : $${balance.toFixed(2)};
-}
+        if (!amount || amount <= 0) {
+            displayMessage('Veuillez entrer un montant valide', 'dashboardMessage', 'error');
+            return;
+        }
 
-function updateInvestment() {
-    document.getElementById('investmentDisplay').innerText = Investissement : $${investment.toFixed(2)};
-}
+        balance += amount;
+        transactionHistory.push({ type: 'Dépôt', amount, date: new Date().toLocaleString() });
+        updateBalance();
+        updateTransactionHistory();
+        displayMessage(`Dépôt réussi! Nouveau solde: ${balance.toFixed(2)}$`, 'dashboardMessage', 'success');
+    }
 
-function clearDepositFields() {
-    document.getElementById('depositPhoneNumber').value = '';
-    document.getElementById('depositVisaCard').value = '';
-    document.getElementById('depositMasterCard').value = '';
-    document.getElementById('depositBankAccount').value = '';
-    document.getElementById('depositTime').selectedIndex = 0; // Réinitialiser le select
-}
-
-function clearWithdrawFields() {
-    document.getElementById('withdrawPhoneNumber').value = '';
-    document.getElementById('withdrawVisaCard').value = '';
-    document.getElementById('withdrawMasterCard').value = '';
-    document.getElementById('withdrawBankAccount').value = '';
-}
-</script>
-
+    function withdraw() {
 </body>
 </html>
